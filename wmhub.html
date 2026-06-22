@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>WM Uzayı</title>
+    <style>
+        body {
+            background-color: #0f1115;
+            color: #ece8e1;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            text-align: center;
+            padding-top: 50px;
+            margin: 0;
+            overflow: hidden;
+            position: relative;
+            height: 100vh;
+            width: 100vw;
+            user-select: none;
+        }
+
+        h1 {
+            color: #ff4655;
+            font-size: 50px;
+            margin-bottom: 5px;
+            text-shadow: 0 0 15px rgba(255, 70, 85, 0.7), 0 0 30px rgba(255, 70, 85, 0.4);
+            font-weight: 900;
+            position: relative;
+            z-index: 10;
+        }
+
+        p {
+            font-size: 20px;
+            color: #8b929a;
+            position: relative;
+            z-index: 10;
+        }
+
+        .box {
+            background-color: rgba(31, 35, 38, 0.95);
+            width: 300px;
+            margin: 20px auto;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #ff4655;
+            box-shadow: 0px 0px 20px rgba(255, 70, 85, 0.4);
+            position: relative;
+            z-index: 10;
+        }
+
+        .status {
+            color: #00ff7f;
+            font-weight: bold;
+            text-shadow: 0 0 10px rgba(0, 255, 127, 0.5);
+        }
+
+        .yt-btn {
+            display: inline-block;
+            background-color: #ff4655;
+            color: white;
+            padding: 15px 30px;
+            font-size: 18px;
+            font-weight: bold;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 10px;
+            transition: 0.3s;
+            box-shadow: 0px 0px 25px rgba(255, 70, 85, 0.6);
+            position: relative;
+            z-index: 10;
+        }
+
+        .yt-btn:hover {
+            background-color: #b52f3a;
+            transform: scale(1.05);
+            box-shadow: 0px 0px 35px rgba(255, 70, 85, 0.9);
+        }
+
+        /* SES BUTONU AYARI */
+        .audio-btn {
+            background-color: #9000ff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: 0.3s;
+            box-shadow: 0px 0px 15px rgba(144, 0, 255, 0.5);
+            width: 100%;
+        }
+        .audio-btn:hover {
+            background-color: #6a00b8;
+            box-shadow: 0px 0px 20px rgba(144, 0, 255, 0.8);
+        }
+
+        .particle {
+            position: absolute;
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: fall linear infinite;
+            z-index: 2;
+        }
+
+        @keyframes fall {
+            0% {
+                top: -20px;
+                transform: translateX(0);
+            }
+            100% {
+                top: 105vh;
+                transform: translateX(30px);
+            }
+        }
+
+        .aim-target {
+            width: 45px;
+            height: 45px;
+            background-color: rgba(0, 255, 127, 0.2);
+            border: 3px solid #00ff7f;
+            border-radius: 50%;
+            position: absolute;
+            cursor: crosshair;
+            box-shadow: 0 0 20px #00ff7f;
+            z-index: 5;
+            transition: transform 0.1s;
+        }
+
+        .aim-target:active {
+            transform: scale(0.8);
+        }
+
+        #score-counter {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #1f2326;
+            color: #00ff7f;
+            padding: 10px 15px;
+            border-radius: 5px;
+            border: 1px solid #00ff7f;
+            font-weight: bold;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="score-counter">Skor: 0</div>
+    <div id="aim-area"></div>
+
+    <h1>WM HUB</h1>
+    <p>Kafayı dağıtma ve üretim merkezine hoş geldin kanka.</p>
+
+    <div class="box">
+        <h3>Mevcut Durum</h3>
+        <p class="status">// Sistem Aktif...</p>
+        <p>Stres yok, para derdi yok. Sadece üretim var.</p>
+    </div>
+
+    <div class="box" style="border-color: #00ff7f; box-shadow: 0px 0px 20px rgba(0, 255, 127, 0.3);">
+        <h3 style="color: #00ff7f; text-shadow: 0 0 10px rgba(0, 255, 127, 0.4);">Ekipman & Hassasiyet</h3>
+        <p>🖱️ Mouse: VXE R1</p>
+        <p>⌨️ Klavye: MAD 68 HE (0.2mm Actuation)</p>
+        <p>🎯 Valorant Sens: 0.62 / 500 DPI</p>
+    </div>
+
+    <a href="https://www.youtube.com/@WM_RAWZ" target="_blank" class="yt-btn">
+        🎥 YouTube Kanalımı Ziyaret Et
+    </a>
+
+    <div class="box" style="border-color: #9000ff; box-shadow: 0px 0px 20px rgba(144, 0, 255, 0.3);">
+        <h3 style="color: #9000ff; margin-bottom: 15px; text-shadow: 0 0 10px rgba(144, 0, 255, 0.4);">🎵 Arka Plan Müziği</h3>
+        
+        <audio id="bg-music" autoplay muted loop style="width: 100%; display: none;">
+            <source src="sarki.mp3" type="audio/mpeg">
+            <source src="sarki.wav" type="audio/wav">
+            <source src="sarki" type="audio/mpeg">
+        </audio>
+
+        <button class="audio-btn" id="mute-btn" onclick="toggleMusic()">🔊 MÜZİĞİ ETKİNLEŞTİR</button>
+    </div>
+
+    <script>
+        const music = document.getElementById('bg-music');
+        const muteBtn = document.getElementById('mute-btn');
+
+        // Sayfa açıldığında müzik sesini %20'ye (kısık ses) ayarla
+        if (music) {
+            music.volume = 0.2;
+        }
+
+        function toggleMusic() {
+            if (music) {
+                if (music.muted) {
+                    music.muted = false; // Sessizi kaldır
+                    music.play(); // Garantilemek için oynat
+                    muteBtn.innerText = "🎵 MÜZİK ÇALIYOR (%20)";
+                    muteBtn.style.backgroundColor = "#00ff7f";
+                    muteBtn.style.boxShadow = "0px 0px 15px rgba(0, 255, 127, 0.5)";
+                    muteBtn.style.color = "#0f1115";
+                } else {
+                    music.muted = true;
+                    muteBtn.innerText = "🔇 MÜZİK SESSİZDE";
+                    muteBtn.style.backgroundColor = "#ff4655";
+                    muteBtn.style.boxShadow = "0px 0px 15px rgba(255, 46, 85, 0.5)";
+                    muteBtn.style.color = "white";
+                }
+            }
+        }
+
+        // Beyaz Parçacık Döngüsü
+        const particleCount = 20;
+        for (let i = 0; i < particleCount; i++) {
+            createParticle();
+        }
+
+        function createParticle() {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            const size = Math.random() * 4 + 2;
+            particle.style.width = size + 'px';
+            particle.style.height = size + 'px';
+            particle.style.left = Math.random() * window.innerWidth + 'px';
+            particle.style.animationDuration = (Math.random() * 5 + 4) + 's';
+            particle.style.animationDelay = (Math.random() * 5) + 's';
+            document.body.appendChild(particle);
+        }
+
+        // Aim Lab Sistemi
+        let score = 0;
+        const scoreCounter = document.getElementById('score-counter');
+        const aimArea = document.getElementById('aim-area');
+
+        for(let i = 0; i < 3; i++) {
+            createTarget();
+        }
+
+        function createTarget() {
+            const target = document.createElement('div');
+            target.className = 'aim-target';
+            const pageWidth = window.innerWidth;
+            const pageHeight = window.innerHeight;
+            const targetSize = 45;
+
+            let randomX;
+            if (Math.random() < 0.5) {
+                randomX = Math.random() * (pageWidth / 2 - 220);
+            } else {
+                randomX = (pageWidth / 2 + 180) + Math.random() * (pageWidth / 2 - 220);
+            }
+
+            if (randomX < 10 || randomX > pageWidth - 60 || isNaN(randomX)) {
+                randomX = Math.random() * 50; 
+            }
+
+            let randomY = Math.random() * (pageHeight - targetSize - 120) + 40;
+
+            target.style.left = randomX + 'px';
+            target.style.top = randomY + 'px';
+
+            target.onclick = function() {
+                score++;
+                scoreCounter.innerText = 'Skor: ' + score;
+                this.remove();
+                createTarget();
+            };
+
+            aimArea.appendChild(target);
+        }
+    </script>
+
+</body>
+</html>
